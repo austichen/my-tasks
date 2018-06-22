@@ -1,0 +1,23 @@
+<% include ./partials/header %>
+  <div class='container row'>
+    <div class="col s10 m6 offset-s1 offset-m3">
+        <br></br>
+        <h4 class="center-align">enter your credentials:</h4>
+        <br></br>
+      <form action="/login" method="post" >
+        <div class="input-field">
+            <input id="username" type="text" name="username"/>
+            <label for="username">username</label>
+        </div>
+        <div class="input-field">
+            <input id="password" type="password" name="password" />
+            <label for="password">password</label>
+        </div>
+        <div>
+            <button type="submit" class="waves-effect waves-light btn">log in</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<% include ./partials/footer %>

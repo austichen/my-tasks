@@ -6,23 +6,23 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="/styles/materialize.min.css" media="screen,projection">
-    <link type="text/css" rel="stylesheet" href="/styles/authorization.css" media="screen,projection">
+    <link type="text/css" rel="stylesheet" href="/styles/main.css" media="screen,projection">
 
   </head>
   <body>
-    <nav>
+    <nav class="teal lighten-2">
       <div class="nav-wrapper container">
         <a href="/" class="brand-logo">myTasks</a>
+        <a href="#!" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="#">tasks</a></li>
-          <li><a href="#">upcoming</a></li>
-          <li><a href="#">myAccount</a></li>
+          <li><a href="/">tasks</a></li>
+          <li><a href="/">create</a></li>
+          <li><a href="/">myAccount</a></li>
         </ul>
       </div>
     </nav>
-
-    <div class='container'>
-      <h1 class="center-align">Welcome to mySites</h1>
-    </div>
-  </body>
-</html>
+    <ul class="sidenav" id="mobile-demo">
+      <li><a href="/">tasks</a></li>
+      <li><a href="/">create</a></li>
+      <li><a href="/">myAccount</a></li>
+    </ul>

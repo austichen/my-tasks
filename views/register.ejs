@@ -1,0 +1,43 @@
+<% include ./partials/header %>
+
+<div class='container row'>
+  <div class="col s10 m6 offset-s1 offset-m3">
+    <br></br>
+    <h4 class="center-align">complete the form below:</h4>
+    <br></br>
+    <form action="/login" method="post" >
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="first_name" type="text" name="firstName">
+          <label for="first_name">first name</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="last_name" type="text" name="lastName">
+          <label for="last_name">last name</label>
+        </div>
+      </div>
+      <div class="input-field">
+          <input id="email" type="email" class="validate" name="email"/>
+          <label for="email">email</label>
+          <span class="helper-text" data-error="incorrect email format">don't worry, you won't get emails. this is for learning purposes</span>
+      </div>
+      <div class="input-field">
+          <input id="username" type="text" name="username"/>
+          <label for="username">username</label>
+      </div>
+      <div class="input-field">
+          <input id="password" type="password" name="password" />
+          <label for="password">password</label>
+      </div>
+      <div class="input-field">
+          <input id="passwordVerify" type="password" name="passwordVerify" />
+          <label for="passwordVerify">verify password</label>
+      </div>
+      <div>
+          <button type="submit" class="waves-effect waves-light btn">sign up</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<% include ./partials/footer %>
