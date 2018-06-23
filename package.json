@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/austichen/my-tasks#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "*",
     "dotenv": "^6.0.0",

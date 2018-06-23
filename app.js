@@ -3,7 +3,6 @@ const app = express();
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const { check, validationResult } = require('express-validator/check');
 const session = require('express-session');
 const mongoose = require('mongoose');
 require('dotenv').config();
