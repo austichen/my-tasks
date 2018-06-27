@@ -3,6 +3,7 @@ const app = express();
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
 const session = require('express-session');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -31,6 +32,13 @@ app.use(session({
   saveUninitialized: true,
   resave: true
 }))
+
+//express messages middleware
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
 
 //passport initialization
 app.use(passport.initialize());
