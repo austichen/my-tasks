@@ -18,6 +18,10 @@ module.exports.findByUsername = (_username, callback) =>{
   User.findOne({username: _username}, callback)
 }
 
+module.exports.findByUsernameAsync = (_username) => {
+  return User.findOne({username: _username})
+}
+
 module.exports.findUserById = (id, callback) => {
   User.findById(id, callback);
 }

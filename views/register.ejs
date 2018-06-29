@@ -62,7 +62,7 @@
           <input id="passwordVerify" type="password" name="passwordVerify" />
           <label for="passwordVerify">verify password</label>
           <%errors.forEach(error =>{ %>
-            <% if(error.param=='lastName'){%>
+            <% if(error.param=='passwordVerify'){%>
               <span class="helper-text red-text" ><%=error.msg%></span>
             <%}%>
           <% }) %>

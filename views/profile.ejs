@@ -1,0 +1,11 @@
+<% include ./partials/header %>
+  <div class='container'>
+    <%- messages('./messages/loginAlert', locals) %>
+    <ul>
+      <li>name: <%= user.first_name %></li>
+      <li>last name: <%= user.last_name %></li>
+      <li>username: <%= user.username %></li>
+      <li>email: <%= user.email %></li>
+    </ul>
+  </div>
+<% include ./partials/footer %>

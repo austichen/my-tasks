@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 User = require('../models/user');
 
-
+const test = 'hello world'
 router.get('/login', (req, res) =>{
     res.render('login');
 })
@@ -13,11 +13,21 @@ router.get('/login', (req, res) =>{
 router.post('/login', (req,res, next) =>{
   console.log('check2')
   passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/user',
     failureRedirect: '/user/login',
     successFlash: true,
     failureFlash: true
   })(req, res, next);
+})
+
+router.get('/logout', (req, res) => {
+  if(req.user){
+    req.flash('green', 'you have been logged out.')
+  } else {
+    req.flash('red', 'you are not logged in')
+  }
+  req.logout();
+  res.redirect('/');
 })
 
 router.get('/register', (req, res) =>{
@@ -28,7 +38,15 @@ router.post('/register', [
   check('firstName', 'First name is required').isLength({min: 1}),
   check('lastName', 'Last name is required').isLength({min: 1}),
   check('email', 'Email is invalid').isEmail(),
-  check('username', 'Username is required').isLength({min: 1}),
+  check('username', 'Username is required')
+    .isLength({min: 1})
+    .custom(async (value, { req }) => {
+      let user = await User.findByUsername(value);
+      if (user) {
+        return false;
+      }
+    })
+    .withMessage('Username is already taken'),
   check('password', 'Password must be at least 6 characters long').isLength({min: 6}),
   check('passwordVerify', 'Passwords must match')
     .custom((value,{req, loc, path}) => {
@@ -74,5 +92,15 @@ router.post('/register', [
     }
   })
 })
+
+router.get('/', (req, res, next) => {
+  if(!req.user){
+    return res.render('loginRequired');
+  }
+  next()
+}, (req, res) => {
+  res.render('profile', {user: req.user})
+})
+
 
 module.exports = router;

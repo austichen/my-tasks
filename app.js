@@ -29,7 +29,7 @@ app.use(express.static(__dirname+'/public'));
 //express session middlware
 app.use(session({
   secret: 'flying platypus',
-  saveUninitialized: true,
+  saveUninitialized: false,
   resave: true
 }))
 
