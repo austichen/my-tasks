@@ -44,6 +44,9 @@ app.use(function (req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
+//passport config
+require('./config/passport')(passport);
+
 app.get('/', (req, res) =>{
   res.render("home")
 })

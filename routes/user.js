@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { check, validationResult } = require('express-validator/check');
 const flash = require('connect-flash')
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 User = require('../models/user');
 
 
@@ -9,24 +10,14 @@ router.get('/login', (req, res) =>{
     res.render('login');
 })
 
-router.post('/login', (req,res) =>{
-  const username = req.body.username;
-  const password = req.body.password;
-  User.findByUsername(username, (err, user) =>{
-    if(err || !user){
-      req.flash('red', 'Invalid username or password');
-      res.redirect('/user/login');
-    } else {
-      if(bcrypt.compareSync(password, user.password)){
-        req.flash('green', 'Login successful.')
-        //TODO: redirect to actual page instead of homepage
-        res.redirect('/')
-      } else {
-        req.flash('red', 'Invalid username or password');
-        res.redirect('/user/login');
-      }
-    }
-  })
+router.post('/login', (req,res, next) =>{
+  console.log('check2')
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/user/login',
+    successFlash: true,
+    failureFlash: true
+  })(req, res, next);
 })
 
 router.get('/register', (req, res) =>{

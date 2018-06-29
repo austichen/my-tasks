@@ -17,3 +17,7 @@ module.exports.createUser = (user, callback) =>{
 module.exports.findByUsername = (_username, callback) =>{
   User.findOne({username: _username}, callback)
 }
+
+module.exports.findUserById = (id, callback) => {
+  User.findById(id, callback);
+}

@@ -17,3 +17,11 @@ h1,h4,h5 {
     color: white;
     cursor:pointer;
 }
+
+.error{
+  background-color: #f44336;
+}
+
+.success{
+  background-color: #4caf50;
+}
