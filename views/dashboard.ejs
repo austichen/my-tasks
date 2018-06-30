@@ -1,0 +1,6 @@
+<% include ./partials/header %>
+  <div class='container center-align'>
+    <%- messages('./messages/loginAlert', locals) %>
+    <h2 class="center-align">Hey <%= user.first_name %>, here are is your dashboard.</h2>
+  </div>
+<% include ./partials/footer %>

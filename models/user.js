@@ -10,18 +10,25 @@ const userSchema = new mongoose.Schema({
 
 const User = module.exports = mongoose.model('User', userSchema);
 
-module.exports.createUser = (user, callback) =>{
+const createUser = (user, callback) =>{
   User.create(user, callback)
 }
 
-module.exports.findByUsername = (_username, callback) =>{
+const findByUsername = (_username, callback) =>{
   User.findOne({username: _username}, callback)
 }
 
-module.exports.findByUsernameAsync = (_username) => {
+const findByUsernameAsync = (_username) => {
   return User.findOne({username: _username})
 }
 
-module.exports.findUserById = (id, callback) => {
+const findUserById = (id, callback) => {
   User.findById(id, callback);
+}
+
+module.exports = {
+  createUser,
+  findByUsername,
+  findByUsernameAsync,
+  findUserById
 }

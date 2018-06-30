@@ -6,7 +6,13 @@ const passport = require('passport');
 User = require('../models/user');
 
 const test = 'hello world'
-router.get('/login', (req, res) =>{
+router.get('/login', (req, res, next) => {
+  if(req.user) {
+    req.flash('red', 'you are already logged in')
+    return res.redirect('/')
+  }
+  next();
+}, (req, res) =>{
     res.render('login');
 })
 
@@ -41,7 +47,7 @@ router.post('/register', [
   check('username', 'Username is required')
     .isLength({min: 1})
     .custom(async (value, { req }) => {
-      let user = await User.findByUsername(value);
+      let user = await User.findByUsernameAsync(value);
       if (user) {
         return false;
       }
@@ -61,14 +67,6 @@ router.post('/register', [
   const errors = validationResult(req);
   if(!errors.isEmpty()){
     console.log(errors.array())
-    //return res.send('failed')
-    /*
-    errors.array().forEach(error => {
-      req.flash(error.param, error.msg)
-    })
-    res.redirect('/user/register')
-    return;
-    */
     return res.render('register', {errors: errors.array()})
   }
   const salt = bcrypt.genSaltSync(10);
@@ -95,7 +93,8 @@ router.post('/register', [
 
 router.get('/', (req, res, next) => {
   if(!req.user){
-    return res.render('loginRequired');
+    req.flash('red', 'please log in first.')
+    return res.redirect('/')
   }
   next()
 }, (req, res) => {

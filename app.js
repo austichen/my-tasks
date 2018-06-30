@@ -8,6 +8,9 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
+//import middleware
+const middleware = require('./middleware/middleware.js')
+
 //connect to DB
 mongoose.connect(process.env.DATABASE_URL)
 const db = mongoose.connection;
@@ -47,14 +50,17 @@ app.use(passport.session());
 //passport config
 require('./config/passport')(passport);
 
-app.get('/', (req, res) =>{
+app.get('/', middleware.isLoggedIn, (req, res) =>{
   res.render("home")
 })
 
 //routes
 const userRoute = require('./routes/user');
+const dashboardRoute = require('./routes/dashboard');
+const taskRoute = require('./routes/task')
 
 app.use('/user', userRoute);
-
+app.use('/dashboard', dashboardRoute);
+app.use('/task', taskRoute)
 
 app.listen(port, () => {console.log('listening on port ', port)});

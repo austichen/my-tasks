@@ -1,11 +1,16 @@
 <% include ./partials/header %>
   <div class='container'>
     <%- messages('./messages/loginAlert', locals) %>
+    <h1 class="center-align">Welcome, <%= user.first_name %> <%= user.last_name %></h1>
+    <br></br>
+    <h3 class="teal-text text-lighten-3">Here is your information. </h4>
+    <br></br>
     <ul>
-      <li>name: <%= user.first_name %></li>
-      <li>last name: <%= user.last_name %></li>
-      <li>username: <%= user.username %></li>
-      <li>email: <%= user.email %></li>
+      <li><h5>name: <%= user.first_name %><h5></li>
+      <li><h5>last name: <%= user.last_name %><h5></li>
+      <li><h5>username: <%= user.username %><h5></li>
+      <li><h5>email: <%= user.email %><h5></li>
     </ul>
+    <a href="/user/logout" class="waves-effect waves-light btn"><i class="fas fa-sign-out-alt right"></i>log out</a>
   </div>
 <% include ./partials/footer %>
