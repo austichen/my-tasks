@@ -1,0 +1,23 @@
+<% include ./partials/header %>
+  <div class='container row'>
+    <%- messages('./messages/loginAlert', locals) %>
+    <div class="col s10 m6 offset-s1 offset-m3">
+        <br></br>
+        <h4 class="center-align">enter your task information:</h4>
+        <br></br>
+      <form action="/task/create" method="post" >
+        <div class="input-field">
+            <input id="title" type="text" name="title"/>
+            <label for="title">title</label>
+        </div>
+        <div class="input-field">
+            <input id="description" type="text" name="description" />
+            <label for="description">description</label>
+        </div>
+        <div>
+            <button type="submit" class="waves-effect waves-light btn">log in</button>
+        </div>
+      </form>
+    </div>
+  </div>
+<% include ./partials/footer %>

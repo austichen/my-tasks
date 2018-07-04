@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 Task = require('../models/task');
 
 router.get('/create', (req, res) =>{
-  res.render('createTask');
+  res.render('create');
 })
 
 router.post('/create', (req, res) => {
@@ -11,9 +11,10 @@ router.post('/create', (req, res) => {
   const newTask = new Task({
     title: req.body.title,
     description: req.body.description,
-    date_due: Date.now
+    date_due: new Date()
     //author_id: req.user._id,
   })
+  console.log('task: ', newTask)
   Task.addTask(newTask, (err, task) => {
     res.json(task)
   })

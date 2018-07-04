@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+User = require('./models/user');
+Task = require('./models/task')
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');

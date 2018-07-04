@@ -11,10 +11,12 @@ const taskSchema = new mongoose.Schema({
 
 const Task = module.exports = mongoose.model('Task', taskSchema);
 
-const addTask = (task, callback) => {
+module.exports.addTask = function(task, callback){
+  console.log('addTask function')
   Task.create(task, callback);
 }
-
+/*
 module.exports = {
   addTask
 }
+*/
