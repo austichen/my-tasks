@@ -6,6 +6,10 @@ const userSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
+  taskInfo: {
+    numTotal: {type: Number, default: 0},
+    numCompleted: {type: Number, default: 0}
+  }
 })
 
 const User = module.exports = mongoose.model('User', userSchema);
@@ -24,4 +28,8 @@ module.exports.findByUsernameAsync = (_username) => {
 
 module.exports.findUserById = (id, callback) => {
   User.findById(id, callback);
+}
+
+module.exports.increaseNumTasks = (id, callback) => {
+  User.findOneAndUpdate({_id: id}, {$inc:{'taskInfo.numTotal':1}}, callback)
 }

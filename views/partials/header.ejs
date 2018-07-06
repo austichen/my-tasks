@@ -16,18 +16,26 @@
         <a href="/" class="brand-logo">myTasks</a>
         <a href="#!" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="/">tasks</a></li>
-          <li><a href="/">create</a></li>
-          <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">myAccount<i class="material-icons right">arrow_drop_down</i></a></li>
+          <% if(user) { %>
+            <li><a href="/">tasks</a></li>
+            <li><a href="/task/create">create</a></li>
+            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">myAccount<i class="material-icons right">arrow_drop_down</i></a></li>
+          <% } else { %>
+            <li><a href="/user/login">log in</a></li>
+          <% } %>
         </ul>
       </div>
     </nav>
     <ul class="sidenav" id="mobile-demo">
-      <li><a href="/">tasks</a></li>
-      <li><a href="/">create</a></li>
-      <li class="divider"></li>
-      <li><a href="/user">profile</a></li>
-      <li><a href="/user/logout">log out</a></li>
+      <% if(user) { %>
+        <li><a href="/">tasks</a></li>
+        <li><a href="/task/create">create</a></li>
+        <li class="divider"></li>
+        <li><a href="/user">profile</a></li>
+        <li><a href="/user/logout">log out</a></li>
+      <% } else { %>
+        <li><a href="/user/login">log in</a></li>
+      <% } %>
     </ul>
     <ul id="dropdown1" class="dropdown-content">
       <li><a href="/user">profile</a></li>

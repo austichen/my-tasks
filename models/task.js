@@ -15,6 +15,18 @@ module.exports.addTask = function(task, callback){
   console.log('addTask function')
   Task.create(task, callback);
 }
+
+module.exports.findTasksByUserId = (userId, callback) => {
+  Task.find({author_id: userId}, callback);
+}
+
+module.exports.findTaskById = (id, callback) => {
+  Task.findById(id, callback);
+}
+
+module.exports.findTaskAndUpdate = (_task, callback) => {
+  Task.findOneAndUpdate({_id: _task.id}, {$set: {title: _task.title, description: _task.description, date_due: _task.date_due}}, callback);
+}
 /*
 module.exports = {
   addTask

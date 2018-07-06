@@ -1,6 +1,7 @@
 
 h1,h2,h3,h4,h5 {
   color: #A9A9A9;
+  font-weight: lighter;
 }
 
 .btn {
@@ -8,6 +9,15 @@ h1,h2,h3,h4,h5 {
 }
 .card-action {
   text-transform: none;
+}
+
+.no-margin {
+  margin-right:0 !important;
+  margin-bottom:0;
+}
+
+.no-caps {
+  text-transform: none !important;
 }
 .icon_style{
     position: absolute;

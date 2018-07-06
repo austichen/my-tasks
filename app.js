@@ -52,7 +52,17 @@ app.use(passport.session());
 //passport config
 require('./config/passport')(passport);
 
-app.get('/', middleware.isLoggedIn, (req, res) =>{
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+})
+
+app.get('/', (req, res, next) => {
+  if(req.user) {
+    return res.redirect('/dashboard');
+  }
+  next()
+}, (req, res) =>{
   res.render("home")
 })
 
