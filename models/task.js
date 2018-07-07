@@ -27,6 +27,15 @@ module.exports.findTaskById = (id, callback) => {
 module.exports.findTaskAndUpdate = (_task, callback) => {
   Task.findOneAndUpdate({_id: _task.id}, {$set: {title: _task.title, description: _task.description, date_due: _task.date_due}}, callback);
 }
+
+module.exports.deleteTask = (taskId, callback) => {
+  //TODO this doesn't exist
+  Task.findByIdAndDelete(taskId, callback);
+}
+
+module.exports.markAsDone = (taskId, callback) => {
+  Task.findOneAndUpdate({_id: taskId}, {$set: {isDone: true}}, callback);
+}
 /*
 module.exports = {
   addTask

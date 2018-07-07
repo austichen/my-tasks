@@ -19,12 +19,25 @@ h1,h2,h3,h4,h5 {
 .no-caps {
   text-transform: none !important;
 }
+
+.mark-done-link {
+  cursor: pointer;
+}
+
 .icon_style{
     position: absolute;
     right: 10px;
     top: 10px;
     font-size: 20px;
     color: white;
+    cursor:pointer;
+}
+
+.icon-card {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 17px;
     cursor:pointer;
 }
 

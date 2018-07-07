@@ -71,30 +71,68 @@ router.post('/edit/:taskId', isLoggedIn, [
 })
 
 router.get('/edit/:taskId', isLoggedIn, (req, res) => {
-  console.log('req.user: ',req.user)
-  console.log('typeof taskid: ',typeof req.params.taskId)
-  Task.findTaskById(req.params.taskId, (err, task) => {
-    if(err || !task || (task && task.author_id!=req.user.id)) {
+  console.log('at least the function got called')
+  if(req.query.done) {
+    const id = req.params.taskId
+    Task.markAsDone(id, (err, task) => {
+      if(err || !task) {
+        console.log('error or no task')
+        return res.status(500).send('error');
+      } else {
+        return res.send('task done');
+      }
+    })
+  } else {
+    console.log('req.user: ',req.user)
+    console.log('typeof taskid: ',typeof req.params.taskId)
+    Task.findTaskById(req.params.taskId, (err, task) => {
+      if(err || !task || (task && task.author_id!=req.user.id)) {
+        if(err) {
+          console.log('err')
+        } else if(!task) {
+          console.log('no task')
+        } else {
+          if(task.author_id!=req.user._id) {
+          console.log('ids dont match')
+          console.log('authorId: ',task.author_id,", typeof:",typeof task.author_id, "; userId: ",req.user._id,", typeof: ",typeof req.user._id)
+        }
+        }
+        req.flash('red', 'Error retrieving task')
+        return res.redirect('/dashboard');
+      } else {
+        const taskObject = {
+          id: task._id,
+          title: task.title,
+          description: task.description,
+          date_due: task.date_due.toISOString().slice(0,10),
+        }
+        res.render('edit', {task: taskObject, errors: []})
+      }
+    })
+  }
+})
+
+router.delete('/delete/:taskId', isLoggedIn, (req, res) => {
+  const taskId = req.params.taskId
+  Task.deleteTask(taskId, (err, task) => {
+    if(err || !task) {
+      console.log('first part error')
       if(err) {
         console.log('err')
-      } else if(!task) {
+      }
+      if(!task) {
         console.log('no task')
-      } else {
-        if(task.author_id!=req.user._id) {
-        console.log('ids dont match')
-        console.log('authorId: ',task.author_id,", typeof:",typeof task.author_id, "; userId: ",req.user._id,", typeof: ",typeof req.user._id)
       }
-      }
-      req.flash('red', 'Error retrieving task')
-      return res.redirect('/dashboard');
+      res.status(500);
     } else {
-      const taskObject = {
-        id: task._id,
-        title: task.title,
-        description: task.description,
-        date_due: task.date_due.toISOString().slice(0,10),
-      }
-      res.render('edit', {task: taskObject, errors: []})
+      User.decreaseNumTasks(req.user.id, (err, user) => {
+        if(err || !user) {
+          console.log('second part error')
+          res.status(500);
+        } else {
+        res.send('Ok');
+        }
+      })
     }
   })
 })

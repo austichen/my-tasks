@@ -14,7 +14,7 @@ require('dotenv').config();
 const middleware = require('./middleware/middleware.js')
 
 //connect to DB
-mongoose.connect(process.env.DATABASE_URL)
+mongoose.connect(process.env.DATABASE_URL,{useNewUrlParser: true})
 const db = mongoose.connection;
 
 const port = process.env.PORT || 3000;
