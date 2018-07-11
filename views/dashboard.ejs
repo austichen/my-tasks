@@ -5,7 +5,7 @@
       <br></br>
     <h5 class='teal-text text-lighten-2'>Upcomming Tasks </h5>
     <% if(upcommingTasks.length<1) { %>
-      <p>You have no upcomming tasks</p>
+      <p>You have no tasks due in the upcoming week.</p>
     <% } else {%>
       <div class='row'>
       <% upcommingTasks.forEach(task => { %>
@@ -23,7 +23,7 @@
                   <a class="no-caps no-margin" href="/task/edit/<%= task.id %>">edit task</a>
                 </div>
                 <div class="col s6">
-                  <a class="no-caps no-margin mark-done-link" data-id="<%= task.id %>">mark as done</a>
+                  <a class="no-caps no-margin mark-done-link" data-id="<%= task.id %>" data-done="<%= task.isDone %>">mark as done</a>
                 </div>
               </div>
             </div>

@@ -33,8 +33,8 @@ module.exports.deleteTask = (taskId, callback) => {
   Task.findByIdAndDelete(taskId, callback);
 }
 
-module.exports.markAsDone = (taskId, callback) => {
-  Task.findOneAndUpdate({_id: taskId}, {$set: {isDone: true}}, callback);
+module.exports.markAsDone = (taskId, taskIsDone, callback) => {
+  taskIsDone ? Task.findOneAndUpdate({_id: taskId}, {$set: {isDone: false}}, callback) : Task.findOneAndUpdate({_id: taskId}, {$set: {isDone: true}}, callback)
 }
 /*
 module.exports = {

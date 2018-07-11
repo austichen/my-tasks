@@ -1,0 +1,72 @@
+<% include ./partials/header %>
+  <div class='container'>
+    <%- messages('./messages/loginAlert', locals) %>
+    <h3>Hey <%= user.first_name %>, here is your dashboard.</h3>
+      <br></br>
+    <h5 class='teal-text text-lighten-2'>Tasks </h5>
+    <% if(tasksStatus!=undefined && !tasksStatus.uncompleted) { %>
+      <p>You have no tasks.</p>
+    <% } else {%>
+      <div class='row'>
+      <% upcommingTasks.forEach(task => { %>
+        <% if(!task.isDone) { %>
+        <div class="col s12 m4">
+          <div class="card grey lighten-4">
+            <div class="card-content teal-text text-darken-3">
+              <i class="fas fa-trash icon-card red-text text-lighten-2" data-id="<%= task.id %>"></i>
+              <span class="card-title"><%=task.title%></span>
+              <p><%= task.description %></p>
+              <p>Due on: <%= task.date_due %></p>
+            </div>
+            <div class="card-action">
+              <div class="row no-margin">
+                <div class="col s6">
+                  <a class="no-caps no-margin" href="/task/edit/<%= task.id %>">edit task</a>
+                </div>
+                <div class="col s6">
+                  <a class="no-caps no-margin mark-done-link" data-id="<%= task.id %>" data-done="<%= task.isDone %>">mark as done</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      <% }) %>
+      </div>
+    <% } %>
+
+    <!-- Completed Tasks -->
+    <h5 class='teal-text text-lighten-2'>Completed tasks</h5>
+    <% if(tasksStatus!=undefined && !tasksStatus.completed) { %>
+      <p>You have not completed any tasks.</p>
+    <% } else {%>
+      <div class='row'>
+      <% upcommingTasks.forEach(task => { %>
+        <% if(task.isDone) { %>
+        <div class="col s12 m4">
+          <div class="card grey lighten-4">
+            <div class="card-content teal-text text-darken-3">
+              <i class="fas fa-trash icon-card red-text text-lighten-2" data-id="<%= task.id %>"></i>
+              <span class="card-title"><%=task.title%></span>
+              <p><%= task.description %></p>
+              <p>Due on: <%= task.date_due %></p>
+            </div>
+            <div class="card-action">
+              <div class="row no-margin">
+                <div class="col s6">
+                  <a class="no-caps no-margin" href="/task/edit/<%= task.id %>">edit task</a>
+                </div>
+                <div class="col s6">
+                  <a class="no-caps no-margin mark-done-link" data-id="<%= task.id %>" data-done="<%= task.isDone %>">mark as undone</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      <% }) %>
+      </div>
+    <% } %>
+    <h5 class='teal-text text-lighten-2'>You currently have <%= user.taskInfo.numTotal %> tasks in total</h5>
+  </div>
+<% include ./partials/footer %>

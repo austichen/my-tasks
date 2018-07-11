@@ -21,7 +21,8 @@ router.get('/', isLoggedIn, (req, res) => {
               title: task.title,
               description: task.description,
               date_due: task.date_due.toDateString(),
-              date_created: task.date_created.toDateString()
+              date_created: task.date_created.toDateString(),
+              isDone: task.isDone
             }
             _upcommingTasks.push(formattedTask);
           }

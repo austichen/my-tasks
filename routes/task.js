@@ -72,9 +72,19 @@ router.post('/edit/:taskId', isLoggedIn, [
 
 router.get('/edit/:taskId', isLoggedIn, (req, res) => {
   console.log('at least the function got called')
-  if(req.query.done) {
-    const id = req.params.taskId
-    Task.markAsDone(id, (err, task) => {
+  if(req.query.done!=undefined) {
+    var isDone;
+    if(req.query.done==='false') {
+      isDone=false;
+    } else if(req.query.done==='true') {
+      isDone=true;
+    } else {
+      req.flash('red', 'Error updating task.')
+      return res.redirect('/task')
+    }
+    const id = req.params.taskId;
+    console.log(`isdone: ${isDone}`)
+    Task.markAsDone(id, isDone, (err, task) => {
       if(err || !task) {
         console.log('error or no task')
         return res.status(500).send('error');
@@ -133,6 +143,40 @@ router.delete('/delete/:taskId', isLoggedIn, (req, res) => {
         res.send('Ok');
         }
       })
+    }
+  })
+})
+
+router.get('/', isLoggedIn, (req, res) => {
+  Task.findTasksByUserId(req.user.id, (err, tasks) => {
+    if(err) {
+      req.flash('red', 'Unexpected error');
+      return res.redirect('/dashboard')
+    }
+    if(tasks) {
+      var _upcommingTasks = [];
+      var completedTasks = false;
+      var uncompletedTasks = false;
+      tasks.forEach(task => {
+        if(task.isDone) {
+          completedTasks = true;
+        } else {
+          uncompletedTasks = true;
+        }
+        const formattedTask = {
+          id: task._id,
+          title: task.title,
+          description: task.description,
+          date_due: task.date_due.toDateString(),
+          date_created: task.date_created.toDateString(),
+          isDone: task.isDone
+        }
+        _upcommingTasks.push(formattedTask);
+      })
+      console.log('upcomming tasks: ',_upcommingTasks)
+      res.render('view', {user: req.user, upcommingTasks: _upcommingTasks, tasksStatus: {completed: completedTasks, uncompleted: uncompletedTasks}})
+    } else {
+      res.render('view', {user: req.user, upcommingTasks: null})
     }
   })
 })
