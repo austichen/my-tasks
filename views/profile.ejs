@@ -10,6 +10,7 @@
       <li><h5>last name: <%= user.last_name %><h5></li>
       <li><h5>username: <%= user.username %><h5></li>
       <li><h5>email: <%= user.email %><h5></li>
+      <li><h5 class="teal-text text-lighten-2">You have completed <%= user.taskInfo.numCompleted %> of <%= user.taskInfo.numTotal %> tasks.<h5></li>
     </ul>
     <a href="/user/logout" class="waves-effect waves-light btn"><i class="fas fa-sign-out-alt right"></i>log out</a>
   </div>

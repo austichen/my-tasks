@@ -17,7 +17,6 @@ router.get('/login', (req, res, next) => {
 })
 
 router.post('/login', (req,res, next) =>{
-  console.log('check2')
   passport.authenticate('local', {
     successRedirect: '/user',
     failureRedirect: '/user/login',
@@ -66,7 +65,6 @@ router.post('/register', [
 ], (req, res) => {
   const errors = validationResult(req);
   if(!errors.isEmpty()){
-    console.log(errors.array())
     return res.render('register', {errors: errors.array()})
   }
   const salt = bcrypt.genSaltSync(10);
@@ -78,7 +76,6 @@ router.post('/register', [
     email: req.body.email,
     password: hash
   })
-  console.log(req.body.password)
   User.createUser(newUser, (err, user) =>{
     if(err){
       res.send('database errror');

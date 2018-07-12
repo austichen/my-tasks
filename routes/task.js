@@ -25,7 +25,6 @@ router.post('/create', [
     date_due: moment(req.body.date_due),
     author_id: req.user._id
   })
-  console.log('task: ', newTask)
   Task.addTask(newTask, (err, task) => {
     if(err) {
       req.flash('red', 'Unexpected error.')
@@ -58,7 +57,6 @@ router.post('/edit/:taskId', isLoggedIn, [
     description: req.body.description,
     date_due: moment(req.body.date_due)
   }
-  console.log('task: ', newTask)
   Task.findTaskAndUpdate(newTask, (err, task) => {
     if(err || !task) {
       req.flash('red', 'Unexpected error.')
@@ -71,7 +69,6 @@ router.post('/edit/:taskId', isLoggedIn, [
 })
 
 router.get('/edit/:taskId', isLoggedIn, (req, res) => {
-  console.log('at least the function got called')
   if(req.query.done!=undefined) {
     var isDone;
     if(req.query.done==='false') {
@@ -83,30 +80,16 @@ router.get('/edit/:taskId', isLoggedIn, (req, res) => {
       return res.redirect('/task')
     }
     const id = req.params.taskId;
-    console.log(`isdone: ${isDone}`)
     Task.markAsDone(id, isDone, (err, task) => {
       if(err || !task) {
-        console.log('error or no task')
         return res.status(500).send('error');
       } else {
         return res.send('task done');
       }
     })
   } else {
-    console.log('req.user: ',req.user)
-    console.log('typeof taskid: ',typeof req.params.taskId)
     Task.findTaskById(req.params.taskId, (err, task) => {
       if(err || !task || (task && task.author_id!=req.user.id)) {
-        if(err) {
-          console.log('err')
-        } else if(!task) {
-          console.log('no task')
-        } else {
-          if(task.author_id!=req.user._id) {
-          console.log('ids dont match')
-          console.log('authorId: ',task.author_id,", typeof:",typeof task.author_id, "; userId: ",req.user._id,", typeof: ",typeof req.user._id)
-        }
-        }
         req.flash('red', 'Error retrieving task')
         return res.redirect('/dashboard');
       } else {
@@ -126,18 +109,10 @@ router.delete('/delete/:taskId', isLoggedIn, (req, res) => {
   const taskId = req.params.taskId
   Task.deleteTask(taskId, (err, task) => {
     if(err || !task) {
-      console.log('first part error')
-      if(err) {
-        console.log('err')
-      }
-      if(!task) {
-        console.log('no task')
-      }
       res.status(500);
     } else {
       User.decreaseNumTasks(req.user.id, (err, user) => {
         if(err || !user) {
-          console.log('second part error')
           res.status(500);
         } else {
         res.send('Ok');
@@ -173,7 +148,6 @@ router.get('/', isLoggedIn, (req, res) => {
         }
         _upcommingTasks.push(formattedTask);
       })
-      console.log('upcomming tasks: ',_upcommingTasks)
       res.render('view', {user: req.user, upcommingTasks: _upcommingTasks, tasksStatus: {completed: completedTasks, uncompleted: uncompletedTasks}})
     } else {
       res.render('view', {user: req.user, upcommingTasks: null})

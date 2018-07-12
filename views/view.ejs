@@ -1,7 +1,7 @@
 <% include ./partials/header %>
   <div class='container'>
     <%- messages('./messages/loginAlert', locals) %>
-    <h3>Hey <%= user.first_name %>, here is your dashboard.</h3>
+    <h3>Take a look at all your tasks.</h3>
       <br></br>
     <h5 class='teal-text text-lighten-2'>Tasks </h5>
     <% if(tasksStatus!=undefined && !tasksStatus.uncompleted) { %>

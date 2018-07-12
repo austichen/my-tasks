@@ -14,6 +14,7 @@ router.get('/', isLoggedIn, (req, res) => {
       const currentDate = new Date();
       tasks.forEach(task => {
         if(!task.isDone) {
+          console.log('current date: ',currentDate, 'date due: ',task.date_due)
           const dateDifference = task.date_due.getTime() - currentDate.getTime();
           if(dateDifference <= 604800000 && dateDifference > 0 && !task.isDone) {
             const formattedTask = {
@@ -28,7 +29,6 @@ router.get('/', isLoggedIn, (req, res) => {
           }
         }
       })
-      console.log('upcomming tasks: ',_upcommingTasks)
       res.render('dashboard', {user: req.user, upcommingTasks: _upcommingTasks})
     } else {
       res.render('dashboard', {user: req.user, upcommingTasks: null})
