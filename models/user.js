@@ -37,3 +37,11 @@ module.exports.increaseNumTasks = (id, callback) => {
 module.exports.decreaseNumTasks = (id, callback) => {
   User.findOneAndUpdate({_id: id}, {$inc:{'taskInfo.numTotal':-1}}, callback)
 }
+
+module.exports.increaseNumCompleted = (id, callback) => {
+  User.findOneAndUpdate({_id: id}, {$inc:{'taskInfo.numCompleted':1}}, callback)
+}
+
+module.exports.decreaseNumCompleted = (id, callback) => {
+  User.findOneAndUpdate({_id: id}, {$inc:{'taskInfo.numCompleted':-1}}, callback)
+}

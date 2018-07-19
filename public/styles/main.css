@@ -4,6 +4,10 @@ h1,h2,h3,h4,h5 {
   font-weight: lighter;
 }
 
+.grey-colour {
+  color: #A9A9A9;
+}
+
 .btn {
     text-transform: none;
 }
@@ -14,6 +18,12 @@ h1,h2,h3,h4,h5 {
 .no-margin {
   margin-right:0 !important;
   margin-bottom:0;
+}
+
+.unstyledDate::-webkit-inner-spin-button,
+.unstyledDate::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
 }
 
 .no-caps {

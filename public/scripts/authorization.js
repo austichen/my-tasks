@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('.sidenav');
   var instances = M.Sidenav.init(elems);
   $(".dropdown-trigger").dropdown();
+  $('.datepicker').datepicker({format: 'yyyy-mm-dd'});
   $('#alert_close').click(function(){
       $( "#alert_box" ).fadeOut( "slow", function() {
       });
@@ -66,5 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.reload();
       }
     })
+  })
+  $('#search-button').on('click', function(e) {
+    const searchQuery = $('#search_input').val();
+    console.log(searchQuery)
+    if(searchQuery=="") {
+      window.location.replace('/task');
+    } else {
+      window.location.replace(`/task?search=${searchQuery}`)
+    }
   })
 });

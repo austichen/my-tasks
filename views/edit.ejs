@@ -21,7 +21,7 @@
             <label for="description">description</label>
         </div>
         <div class="input-field">
-            <input id="date-due" type="date" name="date_due" value="<%= task.date_due %>" />
+            <input id="date-due" type="date" class="datepicker unstyledDate" name="date_due" value="<%= task.date_due %>" />
             <label for="date-due">date due*</label>
             <% errors.forEach(error => {%>
               <% if(error.param=='date_due') { %>

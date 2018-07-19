@@ -6,6 +6,29 @@ const { check, validationResult } = require('express-validator/check');
 
 Task = require('../models/task');
 
+//helper functions
+const isOverDue = (checkDate, knownDate) => {
+  if (moment(checkDate).year() < moment(knownDate).year()) {
+    return true;
+  } else if (moment(checkDate).year() > moment(knownDate).year()) {
+    return false;
+  } else {
+    if (moment(checkDate).month() < moment(knownDate).month()) {
+      return true;
+    } else if (moment(checkDate).month() > moment(knownDate).month()) {
+      return false;
+    } else {
+      if (moment(checkDate).date() < moment(knownDate).date()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+  return false;
+}
+
+
 router.get('/create', isLoggedIn, (req, res) =>{
   res.render('create', {errors: []});
 })
@@ -44,7 +67,7 @@ router.post('/create', [
 
 router.post('/edit/:taskId', isLoggedIn, [
   check('title', 'Title cannot be empty').isLength({min: 1}),
-  check('date_due', "Due date must be after today's date").isAfter(moment().subtract(1, 'day').format())
+  check('date_due', "Due date must be after today's date").isAfter(moment.utc().format())
 ],(req, res) => {
   const errors = validationResult(req);
   if(!errors.isEmpty()){
@@ -84,7 +107,24 @@ router.get('/edit/:taskId', isLoggedIn, (req, res) => {
       if(err || !task) {
         return res.status(500).send('error');
       } else {
-        return res.send('task done');
+        if(isDone) {
+          User.decreaseNumCompleted(req.user.id, (err, user) => {
+            if(err || !user) {
+              return res.status(500).send('error');
+            } else {
+              return res.send('task done');
+            }
+          })
+        } else {
+          User.increaseNumCompleted(req.user.id, (err, user) => {
+            if(err || !user) {
+              return res.status(500).send('error');
+            } else {
+              return res.send('task done');
+            }
+          })
+        }
+
       }
     })
   } else {
@@ -115,7 +155,17 @@ router.delete('/delete/:taskId', isLoggedIn, (req, res) => {
         if(err || !user) {
           res.status(500);
         } else {
-        res.send('Ok');
+          if(task.isDone) {
+            User.decreaseNumCompleted(req.user.id, (err, user) => {
+              if(err || !user) {
+                res.status(500);
+              } else {
+                return res.send('Ok');
+              }
+            })
+          } else {
+            return res.send('Ok');
+          }
         }
       })
     }
@@ -130,27 +180,46 @@ router.get('/', isLoggedIn, (req, res) => {
     }
     if(tasks) {
       var _upcommingTasks = [];
+      var _overdueTasks = [];
       var completedTasks = false;
       var uncompletedTasks = false;
+      const currentDate = new Date();
       tasks.forEach(task => {
-        if(task.isDone) {
-          completedTasks = true;
-        } else {
-          uncompletedTasks = true;
+        if(!req.query.search ||
+        task.title.toUpperCase().indexOf(req.query.search.toUpperCase())>-1 ||
+        task.description.toUpperCase().indexOf(req.query.search.toUpperCase()) >-1) {
+          if(!isOverDue(task.date_due, currentDate) && task.isDone) {
+            completedTasks = true;
+          } else  if(!isOverDue(task.date_due, currentDate) && !task.isDone){
+            uncompletedTasks = true;
+          }
+          const formattedTask = {
+            id: task._id,
+            title: task.title,
+            description: task.description,
+            date_due: task.date_due.toDateString(),
+            date_created: task.date_created.toDateString(),
+            isDone: task.isDone
+          }
+          if(isOverDue(task.date_due, currentDate)) {
+            _overdueTasks.push(formattedTask);
+          } else {
+            _upcommingTasks.push(formattedTask);
+          }
         }
-        const formattedTask = {
-          id: task._id,
-          title: task.title,
-          description: task.description,
-          date_due: task.date_due.toDateString(),
-          date_created: task.date_created.toDateString(),
-          isDone: task.isDone
-        }
-        _upcommingTasks.push(formattedTask);
       })
-      res.render('view', {user: req.user, upcommingTasks: _upcommingTasks, tasksStatus: {completed: completedTasks, uncompleted: uncompletedTasks}})
+      res.render('view', {
+        user: req.user,
+        upcommingTasks: _upcommingTasks,
+        overdueTasks: _overdueTasks,
+        tasksStatus: {
+          completed: completedTasks,
+          uncompleted: uncompletedTasks
+        },
+        searchPlaceholder: req.query.search
+      })
     } else {
-      res.render('view', {user: req.user, upcommingTasks: null})
+      res.render('view', {user: req.user})
     }
   })
 })
