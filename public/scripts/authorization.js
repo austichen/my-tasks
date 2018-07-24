@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
       type: 'GET',
       url: `/task/edit/${id}?done=${done}`,
       success: response => {
-        alert('done!');
         window.location.reload();
       },
       error: err => {
@@ -77,4 +76,25 @@ document.addEventListener('DOMContentLoaded', function() {
       window.location.replace(`/task?search=${searchQuery}`)
     }
   })
+
+  //Render Chart
+  if($('.chartContainer').length) {
+    const tasksChart = $('#myChart');
+    Chart.defaults.global.defaultFontFamily = 'Roboto'
+    Chart.defaults.global.defaultFontSize = 14
+    const chart = new Chart(tasksChart, {
+      type: 'pie',
+      data: {
+        labels: ['Completed', 'Uncompleted'],
+        datasets:[{
+          data: taskData,
+          backgroundColor: [
+            '#00c853',
+            '#ff5252'
+          ]
+        }]
+      }
+    })
+  }
+
 });

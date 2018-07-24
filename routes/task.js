@@ -188,9 +188,9 @@ router.get('/', isLoggedIn, (req, res) => {
         if(!req.query.search ||
         task.title.toUpperCase().indexOf(req.query.search.toUpperCase())>-1 ||
         task.description.toUpperCase().indexOf(req.query.search.toUpperCase()) >-1) {
-          if(!isOverDue(task.date_due, currentDate) && task.isDone) {
+          if(task.isDone) {
             completedTasks = true;
-          } else  if(!isOverDue(task.date_due, currentDate) && !task.isDone){
+          } else if(!isOverDue(task.date_due, currentDate) && !task.isDone){
             uncompletedTasks = true;
           }
           const formattedTask = {
@@ -201,7 +201,7 @@ router.get('/', isLoggedIn, (req, res) => {
             date_created: task.date_created.toDateString(),
             isDone: task.isDone
           }
-          if(isOverDue(task.date_due, currentDate)) {
+          if(isOverDue(task.date_due, currentDate) && !task.isDone) {
             _overdueTasks.push(formattedTask);
           } else {
             _upcommingTasks.push(formattedTask);

@@ -3,15 +3,25 @@
     <%- messages('./messages/loginAlert', locals) %>
     <h1 class="center-align">Welcome, <%= user.first_name %> <%= user.last_name %></h1>
     <br></br>
-    <h3 class="teal-text text-lighten-3">Here is your information. </h4>
-    <br></br>
-    <ul>
-      <li><h5>name: <%= user.first_name %><h5></li>
-      <li><h5>last name: <%= user.last_name %><h5></li>
-      <li><h5>username: <%= user.username %><h5></li>
-      <li><h5>email: <%= user.email %><h5></li>
-      <li><h5 class="teal-text text-lighten-2">You have completed <%= user.taskInfo.numCompleted %> of <%= user.taskInfo.numTotal %> tasks.<h5></li>
-    </ul>
-    <a href="/user/logout" class="waves-effect waves-light btn"><i class="fas fa-sign-out-alt right"></i>log out</a>
+    <div class="row">
+      <div class="col s12 m6">
+        <h3 class="teal-text text-lighten-3 no-top-margin">Here is your information. </h3>
+        <ul>
+          <li><h5>name: <%= user.first_name %><h5></li>
+          <li><h5>last name: <%= user.last_name %><h5></li>
+          <li><h5>username: <%= user.username %><h5></li>
+          <li><h5>email: <%= user.email %><h5></li>
+          <li><h5 class="teal-text text-lighten-2">You have completed <%= user.taskInfo.numCompleted %> of <%= user.taskInfo.numTotal %> tasks.<h5></li>
+        </ul>
+        <a href="/user/logout" class="waves-effect waves-light btn"><i class="fas fa-sign-out-alt right"></i>log out</a>
+      </div>
+      <div class="col s12 m6 chartContainer">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
   </div>
+  <script>
+    const taskData = [<%=user.taskInfo.numCompleted %>, <%= user.taskInfo.numTotal-user.taskInfo.numCompleted%>]
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <% include ./partials/footer %>

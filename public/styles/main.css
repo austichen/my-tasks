@@ -8,11 +8,20 @@ h1,h2,h3,h4,h5 {
   color: #A9A9A9;
 }
 
+.no-top-margin {
+  margin-top: 0px;
+}
+
 .btn {
     text-transform: none;
 }
 .card-action {
   text-transform: none;
+}
+
+#myChart {
+  height: 200px;
+  width: 200px;
 }
 
 .no-margin {

@@ -3,6 +3,7 @@ const { check, validationResult } = require('express-validator/check');
 const flash = require('connect-flash')
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const isLoggedIn = require('../middleware/middleware.js')
 User = require('../models/user');
 
 const test = 'hello world'
@@ -88,13 +89,7 @@ router.post('/register', [
   })
 })
 
-router.get('/', (req, res, next) => {
-  if(!req.user){
-    req.flash('red', 'please log in first.')
-    return res.redirect('/')
-  }
-  next()
-}, (req, res) => {
+router.get('/', isLoggedIn, (req, res) => {
   res.render('profile', {user: req.user})
 })
 
