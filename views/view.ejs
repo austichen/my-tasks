@@ -24,10 +24,10 @@
     <% if(tasksStatus!=undefined && !tasksStatus.uncompleted) { %>
       <p>You have no tasks.</p>
     <% } else {%>
-      <div class='row'>
+      <div class='row display-flex'>
       <% upcommingTasks.forEach(task => { %>
         <% if(!task.isDone) { %>
-        <div class="col s12 m6 l4">
+        <div class="col s12 m6 l4 no-margin">
           <div class="card grey lighten-4">
             <div class="card-content teal-text text-darken-3">
               <i class="fas fa-trash icon-card red-text text-lighten-2" data-id="<%= task.id %>"></i>
@@ -57,10 +57,10 @@
     <% if(tasksStatus!=undefined && !tasksStatus.completed) { %>
       <p>You have not completed any tasks.</p>
     <% } else {%>
-      <div class='row'>
+      <div class='row display-flex'>
       <% upcommingTasks.forEach(task => { %>
         <% if(task.isDone) { %>
-        <div class="col s12 m4">
+        <div class="col s12 m4 no-margin">
           <div class="card grey lighten-4">
             <div class="card-content teal-text text-darken-3">
               <i class="fas fa-trash icon-card red-text text-lighten-2" data-id="<%= task.id %>"></i>
@@ -90,9 +90,9 @@
     <% if(overdueTasks.length<1) { %>
       <p>You have no overdue tasks.</p>
     <% } else {%>
-      <div class='row'>
+      <div class='row display-flex'>
       <% overdueTasks.forEach(task => { %>
-        <div class="col s12 m4">
+        <div class="col s12 m4 no-margin">
           <div class="card grey lighten-4">
             <div class="card-content teal-text text-darken-3">
               <i class="fas fa-trash icon-card red-text text-lighten-2" data-id="<%= task.id %>"></i>

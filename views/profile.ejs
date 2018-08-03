@@ -21,7 +21,11 @@
     </div>
   </div>
   <script>
-    const taskData = [<%=user.taskInfo.numCompleted %>, <%= user.taskInfo.numTotal-user.taskInfo.numCompleted%>]
+    const taskData = {
+      overdue: <%= data.overdue %>,
+      completed: <%= data.completed %>,
+      uncompleted: <%= data.uncompleted %>
+    }
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <% include ./partials/footer %>

@@ -17,7 +17,34 @@ module.exports.addTask = function(task, callback){
 }
 
 module.exports.findTasksByUserId = (userId, callback) => {
-  Task.find({author_id: userId}, callback);
+  const partition = function(tasks, low, high) {
+    var pivot = tasks[high].date_due;
+    var i = (low-1);
+    for (let j=low; j<high; j++) {
+      if (tasks[j].date_due <= pivot) {
+        i++;
+        var temp = tasks[i];
+        tasks[i] = tasks[j];
+        tasks[j] = temp;
+      }
+    }
+    var temp = tasks[i+1];
+    tasks[i+1] = tasks[high];
+    tasks[high] = temp;
+    return i+1;
+  }
+
+  const sort = function(tasks, low, high) {
+    if (low < high) {
+      var pi = partition(tasks, low, high);
+      sort(tasks, low, pi-1);
+      sort(tasks, pi+1, high);
+    }
+  }
+  Task.find({author_id: userId}, (err, tasks) => {
+    if(!err && tasks.length>1) sort(tasks, 0, tasks.length-1)
+    callback(err, tasks);
+  });
 }
 
 module.exports.findTaskById = (id, callback) => {
@@ -29,7 +56,6 @@ module.exports.findTaskAndUpdate = (_task, callback) => {
 }
 
 module.exports.deleteTask = (taskId, callback) => {
-  //TODO this doesn't exist
   Task.findByIdAndDelete(taskId, callback);
 }
 

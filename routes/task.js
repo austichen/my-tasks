@@ -59,7 +59,7 @@ router.post('/create', [
           return res.redirect('/task/create')
         }
         req.flash('green', 'Task saved!')
-        return res.redirect('/task/create')
+        return res.redirect('back')
       })
     }
   })

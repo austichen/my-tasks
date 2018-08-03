@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
       url: '/task/delete/'+id,
       success: response => {
         alert('Task successfuly deleted');
-        window.location.href='/';
+        window.location.reload();
       },
       error: err => {
         alert('Error deleting task');
-        window.location.href='/';
+        window.location.reload();
       }
     })
   })
@@ -85,11 +85,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const chart = new Chart(tasksChart, {
       type: 'pie',
       data: {
-        labels: ['Completed', 'Uncompleted'],
+        labels: ['Completed', 'Uncompleted', 'Overdue'],
         datasets:[{
-          data: taskData,
+          data: [taskData.completed, taskData.uncompleted, taskData.overdue],
           backgroundColor: [
             '#00c853',
+            '#fff176',
             '#ff5252'
           ]
         }]

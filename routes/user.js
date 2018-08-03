@@ -4,9 +4,50 @@ const flash = require('connect-flash')
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const isLoggedIn = require('../middleware/middleware.js')
+const moment = require('moment');
 User = require('../models/user');
+Task = require('../models/task');
 
-const test = 'hello world'
+const isOverDue = (checkDate, knownDate) => {
+  if (moment(checkDate).year() < moment(knownDate).year()) {
+    return true;
+  } else if (moment(checkDate).year() > moment(knownDate).year()) {
+    return false;
+  } else {
+    if (moment(checkDate).month() < moment(knownDate).month()) {
+      return true;
+    } else if (moment(checkDate).month() > moment(knownDate).month()) {
+      return false;
+    } else {
+      if (moment(checkDate).date() < moment(knownDate).date()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+  return false;
+}
+
+function computeGraphData(tasks) {
+  var overdueCount=0, completedCount=0, uncompletedCount=0;
+  tasks.forEach(task => {
+    if(task.isDone) {
+      completedCount++;
+    } else if(isOverDue(task.date_due, new Date())) {
+      overdueCount++;
+    } else {
+      uncompletedCount++;
+    }
+  })
+  const graphData = {
+    overdue: overdueCount,
+    completed: completedCount,
+    uncompleted: uncompletedCount
+  }
+  return graphData;
+}
+
 router.get('/login', (req, res, next) => {
   if(req.user) {
     req.flash('red', 'you are already logged in')
@@ -90,7 +131,16 @@ router.post('/register', [
 })
 
 router.get('/', isLoggedIn, (req, res) => {
-  res.render('profile', {user: req.user})
+  Task.findTasksByUserId(req.user.id, (err, tasks) => {
+    if(err) {
+      req.flash('red', 'database error');
+      res.redirect('/')
+    } else {
+      const graphData = computeGraphData(tasks);
+      console.log(graphData)
+      res.render('profile', {user: req.user, data: graphData})
+    }
+  })
 })
 
 
