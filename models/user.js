@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
   taskInfo: {
     numTotal: {type: Number, default: 0},
     numCompleted: {type: Number, default: 0}
-  }
+  },
+  googleId: String
 })
 
 const User = module.exports = mongoose.model('User', userSchema);
@@ -44,4 +45,17 @@ module.exports.increaseNumCompleted = (id, callback) => {
 
 module.exports.decreaseNumCompleted = (id, callback) => {
   User.findOneAndUpdate({_id: id}, {$inc:{'taskInfo.numCompleted':-1}}, callback)
+}
+
+module.exports.googleIdAuthorize = (profile, callback) => {
+  User.findOneAndUpdate(
+    {googleId: profile.id},
+    {$set: {
+      first_name: profile.name.givenName,
+      last_name: profile.name.familyName,
+      username: profile.displayName,
+      email: "your gmail! this api doesn't let me see your email :("
+    }},
+    {upsert: true, 'new': true},
+    callback)
 }

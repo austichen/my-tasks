@@ -58,6 +58,18 @@ router.get('/login', (req, res, next) => {
     res.render('login');
 })
 
+router.get('/login/google',
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+
+router.get('/login/google/success',
+  passport.authenticate('google', { failureRedirect: '/user/login', failureFlash: true }),
+  function(req, res) {
+    req.flash('green', 'you have successfuly logged in')
+    res.redirect('/');
+  }
+);
+
+
 router.post('/login', (req,res, next) =>{
   passport.authenticate('local', {
     successRedirect: '/user',

@@ -1,0 +1,20 @@
+<div class="col s12 m6 l4 no-margin">
+  <div class="card grey lighten-4 hoverable">
+    <div class="card-content teal-text text-darken-3">
+      <i class="fas fa-trash icon-card red-text text-lighten-2" data-id="<%= task.id %>"></i>
+      <span class="card-title"><%=task.title%></span>
+      <p><%= task.description %></p>
+      <p>Due on: <%= task.date_due %></p>
+    </div>
+    <div class="card-action">
+      <div class="row no-margin">
+        <div class="col s6">
+          <a class="no-caps no-margin" href="/task/edit/<%= task.id %>">edit task</a>
+        </div>
+        <div class="col s6">
+          <a class="no-caps no-margin mark-done-link" data-id="<%= task.id %>" data-done="<%= task.isDone %>">mark as done</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
